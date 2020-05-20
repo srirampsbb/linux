@@ -1,0 +1,86 @@
+# NOTE: '"'"' equals single quote with escape sequences (5 quotes in all ! :()
+
+#Bash 
+alias cmpl='g++ --std=c++11 -g -Wall'
+alias src='source ~/.bash_profile'
+alias als='vim ~/.bash.aliases' 
+alias h='history'
+alias ll='ls -al'
+alias l='ls -lrt'
+alias cl='clear'
+alias u='cd ..'
+alias uu='cd ../../'
+alias uuu='cd ../../../'
+alias uuuu='cd ../../../../'
+alias uuuuu='cd ../../../../../'
+alias tm='tmux attach -t Base'
+alias tmn='tmux new -s Base'
+alias p='pwd'
+alias ed='echo $DISPLAY'
+alias psg='ps aux | grep -v grep | grep -i -e '
+alias ldg='ldconfig -N -v | grep ' 
+alias xc='xclock'
+alias rl='readlink -f'
+find_regex() {
+    find . -regextype sed -regex "$1"
+}
+alias fn='find_regex'
+alias fnrej='find . -name '"'"'*.rej'"'"''
+# alias grp='find . -type f -name *.[ch] | xargs grep '
+alias rgr='rg -tc -tcpp -tpy '
+
+#force kill a process
+fkill() {
+    psg $1 | gawk '{print $2}' | xargs kill -9 
+}
+alias usage='du -sch .[!.]* * |sort -h'
+
+#cscope
+rm_cscope_files() {
+    for x in "$PWD"/cscope.files 
+    do
+        if [ -f $x ]; then
+            echo "rm $x"
+            rm $x 
+        else
+            echo "not found: $x"
+        fi
+
+    done
+}
+
+gen_cscope_files() {
+    rm_cscope_files
+    readlink -f \
+    $(rg -tc -tcpp -tpy --files) \
+    > cscope.files
+    wc -l cscope.files
+}
+
+
+alias c1='rg -tc -tcpp -tpy --files >| cscope.files;wc -l cscope.files'
+alias c2='cscope -b -q -k'
+alias c3='cscope -d -p3'
+alias cscq='gen_cscope_comps;echo "creating cscope db ..";c2;'
+alias csc='pl;gen_cscope_files;echo "creating cscope db ...";c2;cd -'
+
+#Git
+alias gs='git status'
+alias gb='git branch'
+alias gd='git diff HEAD'
+alias gdo='git diff origin/main'
+alias gr='git remote show origin'
+alias gsu='git status -uno'
+alias gc='git commit -a'
+alias gpull='git pull --rebase'
+alias gpush='git push'
+alias gl='git log --oneline -n '
+alias gln='git log -n '
+alias gco='git co '
+
+
+#SSH
+alias fix_ssh='keychain --eval 1>| ~/.ssh-agent-$(uname -a | awk '"'"'{print $2}'"'"')'
+alias shy='ssh -Y '
+
+
