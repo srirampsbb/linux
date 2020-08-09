@@ -7,6 +7,13 @@ set nocompatible
 " sequences!
 set timeoutlen=1000 ttimeoutlen=0
 
+" Install vim plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 " Plugin stuff
 call plug#begin('~/.vim/plugged')
 
@@ -193,11 +200,6 @@ fun! ShowFuncName()
 endfun
 map f :call ShowFuncName() <CR>
 
-" Fix issues with special keys
-map  [1;2D <S-Left>
-map  [1;2C <S-Right>
-cmap [1;2D <S-Left>
-cmap [1;2C <S-Right>
 
 "Whitespace Plugin
 
@@ -207,3 +209,8 @@ let g:strip_only_modified_lines=1
 " disable automatically stripping whitespace for files > 500 lines
 let g:strip_max_file_size = 500
 
+" Uncomment if shift-arrow keys don't work
+"map  [1;2D <S-Left>
+"map  [1;2C <S-Right>
+"cmap [1;2D <S-Left>
+"cmap [1;2C <S-Right>
